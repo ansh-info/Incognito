@@ -1,1 +1,21 @@
 .DS_Store
+# Ignore node_modules folder
+node_modules/
+
+# Ignore npm debug logs
+npm-debug.log*
+
+# Ignore environment variable files
+.env
+
+# Ignore any logs
+*.log
+
+# Ignore package-lock.json or yarn.lock if not needed to be pushed
+package-lock.json
+yarn.lock
+
+# Optional: Ignore dist or build directories if applicable
+/dist
+/build
+
