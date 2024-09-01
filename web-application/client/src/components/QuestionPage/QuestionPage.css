@@ -1,0 +1,119 @@
+.question-page-container {
+  background-color: #f0f4f8;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  margin: 10px auto;
+  max-width: 800px;
+  text-align: left;
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: scale(0.9);
+  }
+  to {
+      opacity: 1;
+      transform: scale(1);
+  }
+}
+
+.back-btn, .submit-btn {
+  background-color: #1e3a8a;
+  color: white;
+  padding: 8px 16px;
+  font-size: 0.8em;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.back-btn:hover, .submit-btn:hover {
+  background-color: #273d9c;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.back-btn:focus, .submit-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.6);
+}
+
+.question-box {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  font-size: 0.8em;
+}
+
+.question-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #1e3a8a;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.question-description {
+  font-size: 0.9em;
+  color: #343a40;
+  line-height: 1.4;
+}
+
+.test-results {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  animation: fadeInUp 1s ease-in-out;
+}
+
+@keyframes fadeInUp {
+  from {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.result-box {
+  padding: 5px 10px;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  font-size: 0.8em;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.result-box:hover {
+  transform: scale(1.05);
+}
+
+.result-box.passed {
+  background-color: #10b981; /* Green background for passed tests */
+}
+
+.result-box.failed {
+  background-color: #f44336; /* Red background for failed tests */
+}
+
+.editor {
+  margin-top: 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease-in-out;
+}
