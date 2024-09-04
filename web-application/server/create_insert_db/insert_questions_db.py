@@ -1,13 +1,15 @@
+import os
 import mysql.connector
 from mysql.connector import errorcode
+from dotenv import load_dotenv
 
 # MySQL database connection details
 config = {
-    'user': 'root',
-    'password': '9084Mysql#',
-    'host': '127.0.0.1',
-    'port': '3306',  # Replace with your MySQL container port if different
-    'database': 'doodle'
+    'user': os.getenv('DB_USER'),
+    'password': os.getenv('DB_PASSWORD'),
+    'host': os.getenv('DB_HOST'),
+    'database': os.getenv('DB_NAME'),
+    'port': os.getenv('DB_PORT'),  # Replace with your MySQL container port if different
 }
 
 # Sample data
