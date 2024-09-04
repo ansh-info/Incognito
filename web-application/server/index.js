@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const mysql = require("mysql2");
 const bcrypt = require("bcrypt");
@@ -9,10 +10,10 @@ app.use(cors());
 app.use(express.json());
 
 const db = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "9084Mysql#",
-  database: "doodle",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
 db.connect((err) => {
@@ -32,7 +33,7 @@ const hashPassword = async (password) => {
 // Endpoint to register a new user
 app.post("/register", async (req, res) => {
   const { username, email, password, is_admin, admin_code } = req.body;
-  const correctAdminCode = "1234"; // Replace with your actual admin code
+  const correctAdminCode = process.env.ADMIN_CODE; // Replace with your actual admin code
 
   if (is_admin && admin_code !== correctAdminCode) {
     return res
