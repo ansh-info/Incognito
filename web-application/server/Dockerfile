@@ -5,14 +5,14 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # Copy the requirements file into the container
-COPY src/utils/requirements.txt .
+COPY utils/requirements.txt .
 
 # Install the dependencies
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # Copy the specific runtestcases.py file into the container
-COPY src/utils/runtestcases.py .
+COPY utils/runtestcases.py .
 
 # Command to run the script (this will be overridden by the command passed in exec)
 CMD ["python", "runtestcases.py"]
