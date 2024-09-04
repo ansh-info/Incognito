@@ -8,10 +8,11 @@ config = {
     'user': os.getenv('DB_USER'),
     'password': os.getenv('DB_PASSWORD'),
     'host': os.getenv('DB_HOST'),
+    'database': os.getenv('DB_NAME'),
     'port': os.getenv('DB_PORT'),  # Replace with your MySQL container port if different
 }
 
-DB_NAME = os.getenv('DB_NAME')
+# DB_NAME = os.getenv('DB_NAME')
 TABLES = {}
 
 TABLES['questions'] = (
