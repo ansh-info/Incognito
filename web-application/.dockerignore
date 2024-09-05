@@ -1,0 +1,54 @@
+# Ignore node modules and other dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Ignore logs
+*.log
+logs
+*.txt
+
+# # Ignore local environment files
+# .env
+# .env.local
+# .env.development
+# .env.test
+# .env.production
+
+# Ignore Docker files
+Dockerfile.doodle
+Dockerfile.testcasess
+.dockerignore
+
+# Ignore test files
+__tests__
+coverage
+*.spec.js
+*.test.js
+*.mocha.js
+
+# Ignore build output
+dist
+build
+.tmp
+.cache
+
+# Ignore editors' directories and temporary files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore Git files
+.git
+.gitignore
+.gitattributes
