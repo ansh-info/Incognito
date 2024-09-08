@@ -21,7 +21,7 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
 
     const fetchData = async (endpoint, setData) => {
         try {
-            const response = await axios.get(`http://localhost:5001${endpoint}`);
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}${endpoint}`);
             setData(response.data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -35,7 +35,7 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
 
     const handleAddUser = async () => {
         try {
-            const response = await axios.post('http://localhost:5001/register', newUser);
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/register`, newUser);
             alert(response.data.message);
             setNewUser({ username: '', email: '', password: '', is_admin: false });
             fetchData('/admin/users', setUsers);
@@ -46,7 +46,7 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
 
     const handleAddQuestion = async () => {
         try {
-            const response = await axios.post('http://localhost:5001/admin/questions', newQuestion);
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/admin/questions`, newQuestion);
             alert(response.data.message);
             setNewQuestion({ title: '', description: '', difficulty: '' });
             fetchData('/questions', setQuestions);
@@ -57,7 +57,7 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
 
     const handleAddTestCase = async () => {
         try {
-            const response = await axios.post('http://localhost:5001/admin/test_cases', newTestCase);
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/admin/test_cases`, newTestCase);
             alert(response.data.message);
             setNewTestCase({ question_id: '', input: '', expected_output: '' });
             fetchData('/admin/test_cases', setTestCases);
@@ -68,7 +68,7 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
 
     const handleDelete = async (endpoint, id, fetchDataFunc) => {
         try {
-            const response = await axios.delete(`http://localhost:5001/admin/${endpoint}/${id}`);
+            const response = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/admin/${endpoint}/${id}`);
             alert(response.data.message);
             fetchDataFunc();
         } catch (error) {
@@ -82,7 +82,7 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
 
     const handleUpdateUser = async () => {
         try {
-            const response = await axios.put(`http://localhost:5001/admin/users/${editingUser.user_id}`, editingUser);
+            const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/admin/users/${editingUser.user_id}`, editingUser);
             alert(response.data.message);
             setEditingUser(null);
             fetchData('/admin/users', setUsers);
@@ -93,7 +93,7 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
 
     const handleUpdateQuestion = async () => {
         try {
-            const response = await axios.put(`http://localhost:5001/admin/questions/${editingQuestion.question_id}`, editingQuestion);
+            const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/admin/questions/${editingQuestion.question_id}`, editingQuestion);
             alert(response.data.message);
             setEditingQuestion(null);
             fetchData('/questions', setQuestions);
@@ -104,7 +104,7 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
 
     const handleUpdateTestCase = async () => {
         try {
-            const response = await axios.put(`http://localhost:5001/admin/test_cases/${editingTestCase.test_case_id}`, editingTestCase);
+            const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/admin/test_cases/${editingTestCase.test_case_id}`, editingTestCase);
             alert(response.data.message);
             setEditingTestCase(null);
             fetchData('/admin/test_cases', setTestCases);

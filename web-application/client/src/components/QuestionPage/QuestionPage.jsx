@@ -9,7 +9,7 @@
 //     const [question, setQuestion] = useState(null);
 
 //     useEffect(() => {
-//         axios.get(`http://localhost:5001/questions/${selectedQuestionId}`)
+//         axios.get(`${process.env.REACT_APP_BACKEND_URL}/questions/${selectedQuestionId}`)
 //             .then(response => {
 //                 setQuestion(response.data);
 //             })
@@ -26,7 +26,7 @@
 
 //     const handleCheckCode = () => {
 //         axios
-//             .post('http://localhost:5001/run', { user_id: user.id, email: user.email, question_id: selectedQuestionId, code })
+//             .post('${process.env.REACT_APP_BACKEND_URL}/run', { user_id: user.id, email: user.email, question_id: selectedQuestionId, code })
 //             .then(({ data }) => {
 //                 console.log('Received test case results:', data.results);
 //                 setTestCaseResults(data.results); // Set test results when code is submitted
@@ -89,7 +89,7 @@ function QuestionPage({ selectedQuestionId, setSelectedQuestion, user, setAdminR
     const [question, setQuestion] = useState(null);
 
     useEffect(() => {
-        axios.get(`http://localhost:5001/questions/${selectedQuestionId}`)
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/questions/${selectedQuestionId}`)
             .then(response => {
                 setQuestion(response.data);
             })
@@ -106,7 +106,7 @@ function QuestionPage({ selectedQuestionId, setSelectedQuestion, user, setAdminR
 
     const handleCheckCode = () => {
         axios
-            .post('http://localhost:5001/run', { user_id: user.id, email: user.email, question_id: selectedQuestionId, code })
+            .post(`${process.env.REACT_APP_BACKEND_URL}/run`, { user_id: user.id, email: user.email, question_id: selectedQuestionId, code })
             .then(({ data }) => {
                 console.log('Received test case results:', data.results);
                 setTestCaseResults(data.results); // Set test results when code is submitted
