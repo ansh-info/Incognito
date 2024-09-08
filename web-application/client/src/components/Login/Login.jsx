@@ -20,7 +20,7 @@ function Login({ setUser }) {
             const payload = isRegistering 
                 ? { username, email, password, is_admin: isAdmin, admin_code: adminCode }
                 : { login, password };
-            const response = await axios.post(`http://localhost:5001${endpoint}`, payload);
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}${endpoint}`, payload);
             alert(response.data.message);
             if (!isRegistering) {
                 if (response.data.user.is_admin) {
