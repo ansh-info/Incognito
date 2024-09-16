@@ -99,7 +99,7 @@ app.post("/login", (req, res) => {
 
 // Endpoint to get all questions
 app.get("/questions", (req, res) => {
-  const query = "SELECT * FROM questions";
+  const query = "SELECT * FROM questions"; // SELECT * FROM questions ORDER BY RAND() LIMIT 3
   db.query(query, (error, results) => {
     if (error) {
       return res.status(500).send(error);
@@ -466,6 +466,55 @@ app.post("/run", (req, res) => {
     });
   });
 });
+
+// Endpoint to fetch suitable candidates
+app.get('/api/candidates', (req, res) => {
+  const query = "SELECT * FROM suitable_candidates";
+  db.query(query, (error, results) => {
+    if (error) return res.status(500).send(error);
+    res.json(results);
+  });
+});
+
+// Endpoint to fetch passed candidates
+app.get('/api/passed-candidates', (req, res) => {
+  const query = "SELECT * FROM submissions"; // Ensure the correct table name
+  db.query(query, (error, results) => {
+    if (error) return res.status(500).send(error);
+    res.json(results);
+  });
+});
+
+// Endpoint to send email to suitable candidates using specific Python script
+app.post('/api/send-email-interview', (req, res) => {
+  const { userId } = req.body;
+
+  // Execute the Python script to send interview emails
+  exec(`python3 emailclient/email_interview.py --user_id=${userId}`, (err, stdout, stderr) => {
+    if (err) {
+      console.error("Error executing interview email script:", err);
+      return res.status(500).json({ message: "Failed to send interview email.", error: err.message });
+    }
+    console.log("Interview email script output:", stdout);
+    res.json({ message: "Interview email sent successfully." });
+  });
+});
+
+// Endpoint to send email to passed candidates using a different Python script
+app.post('/api/send-email-selected', (req, res) => {
+  const { userId } = req.body;
+
+  // Execute the Python script to send selection emails
+  exec(`python3 emailclient/email_selected.py --user_id=${userId}`, (err, stdout, stderr) => {
+    if (err) {
+      console.error("Error executing selected email script:", err);
+      return res.status(500).json({ message: "Failed to send selected email.", error: err.message });
+    }
+    console.log("Selected email script output:", stdout);
+    res.json({ message: "Selected email sent successfully." });
+  });
+});
+
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
