@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AdminDashboard.css';
+require('dotenv').config();
 
 function AdminDashboard({ setUser, setAdminRedirect }) {
     const [users, setUsers] = useState([]);
@@ -13,10 +14,17 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
     const [editingQuestion, setEditingQuestion] = useState(null);
     const [editingTestCase, setEditingTestCase] = useState(null);
 
+    // State variables for suitable candidates and passed candidates
+    const [candidates, setCandidates] = useState([]);
+    const [passedCandidates, setPassedCandidates] = useState([]);
+
     useEffect(() => {
         fetchData('/admin/users', setUsers);
         fetchData('/questions', setQuestions);
         fetchData('/admin/test_cases', setTestCases);
+        // Fetch suitable candidates and passed candidates
+        fetchData('/api/candidates', setCandidates);
+        fetchData('/api/passed-candidates', setPassedCandidates);
     }, []);
 
     const fetchData = async (endpoint, setData) => {
@@ -46,6 +54,7 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
 
     const handleAddQuestion = async () => {
         try {
+            require('dotenv').config();
             const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/admin/questions`, newQuestion);
             alert(response.data.message);
             setNewQuestion({ title: '', description: '', difficulty: '' });
@@ -122,6 +131,26 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
         setAdminRedirect(false);
     };
 
+    // Function to handle sending interview emails to suitable candidates
+    const handleSendInterviewEmail = async (candidate) => {
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/send-email-interview`, { userId: candidate.user_id });
+            alert(response.data.message);
+        } catch (error) {
+            console.error('Error sending interview email:', error);
+        }
+    };
+
+    // Function to handle sending selection emails to passed candidates
+    const handleSendSelectionEmail = async (candidate) => {
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/send-email-selected`, { userId: candidate.user_id });
+            alert(response.data.message);
+        } catch (error) {
+            console.error('Error sending selection email:', error);
+        }
+    };
+
     return (
         <div className="admin-dashboard">
             <h1>Admin Dashboard</h1>
@@ -129,6 +158,8 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
                 <button onClick={handleLogout} className="logout-btn">Logout</button>
                 <button onClick={handleSwitchToQuestions} className="switch-btn">Switch to Questions</button>
             </div>
+
+            {/* Existing tables for users, questions, and test cases */}
             <div className="table-container">
                 <h2>Users</h2>
                 <table>
@@ -362,6 +393,60 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
                     />
                     <button onClick={handleAddTestCase}>Add Test Case</button>
                 </div>
+            </div>
+
+            {/* Table for suitable candidates with interview email button */}
+            <div className="table-container">
+                <h2>Suitable Candidates</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {candidates.map(candidate => (
+                            <tr key={candidate.user_id}>
+                                <td>{candidate.user_id}</td>
+                                <td>{candidate.username}</td>
+                                <td>{candidate.email}</td>
+                                <td>
+                                    <button onClick={() => handleSendInterviewEmail(candidate)}>Send Interview Email</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            {/* Table for passed candidates with selection email button */}
+            <div className="table-container">
+                <h2>Passed Candidates</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {passedCandidates.map(candidate => (
+                            <tr key={candidate.user_id}>
+                                <td>{candidate.user_id}</td>
+                                <td>{candidate.username}</td>
+                                <td>{candidate.email}</td>
+                                <td>
+                                    <button onClick={() => handleSendSelectionEmail(candidate)}>Send Selection Email</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );
