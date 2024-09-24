@@ -9,7 +9,7 @@ function QuestionPage({ selectedQuestionId, setSelectedQuestion, user, setAdminR
     const [question, setQuestion] = useState(null);
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_BACKEND_URL}/questions/${selectedQuestionId}`)
+        axios.get(`http://localhost:5001/questions/${selectedQuestionId}`)
             .then(response => {
                 setQuestion(response.data);
             })
@@ -26,7 +26,7 @@ function QuestionPage({ selectedQuestionId, setSelectedQuestion, user, setAdminR
 
     const handleSubmitCode = () => {
         axios
-            .post(`${process.env.REACT_APP_BACKEND_URL}/submit`, { user_id: user.id, email: user.email, question_id: selectedQuestionId, code })
+            .post('http://localhost:5001/submit', { user_id: user.id, email: user.email, question_id: selectedQuestionId, code })
             .then(({ data }) => {
                 console.log('Received test case results:', data.results);
                 setTestCaseResults(data.results); // Set test results when code is submitted
@@ -39,11 +39,11 @@ function QuestionPage({ selectedQuestionId, setSelectedQuestion, user, setAdminR
 
     const handleRunCode = () => {
         axios
-            .post(`${process.env.REACT_APP_BACKEND_URL}/run`, { user_id: user.id, email: user.email, question_id: selectedQuestionId, code })
+            .post('http://localhost:5001/run', { user_id: user.id, email: user.email, question_id: selectedQuestionId, code })
             .then(({ data }) => {
                 console.log('Received test case results:', data.results);
                 setTestCaseResults(data.results); // Set test results when code is submitted
-                alert("Test cases have been run. Check the results below.");
+                alert("Test cases have been run. Check the results above.");
             })
             .catch((err) => {
                 console.log('Error submitting code:', err);

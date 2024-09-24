@@ -1,141 +1,168 @@
 .admin-dashboard {
-    background-color: #f0f4f8;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(255, 255, 255, 0.15);
     margin: 20px auto;
-    max-width: 900px; /* Reduced width for compactness */
-    text-align: left;
-    animation: fadeIn 1s ease-in-out;
-}
-
-@keyframes fadeIn {
+    max-width: 1100px;
+    animation: fadeInSlide 1.2s ease-in-out;
+    backdrop-filter: blur(15px);
+  }
+  
+  @keyframes fadeInSlide {
     from {
-        opacity: 0;
-        transform: scale(0.9);
+      opacity: 0;
+      transform: translateY(20px);
     }
     to {
-        opacity: 1;
-        transform: scale(1);
+      opacity: 1;
+      transform: translateY(0);
     }
-}
-
-.table-container {
+  }
+  
+  .header-buttons {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 20px;
-    background-color: #fff;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-h1, h2 {
-    margin-bottom: 10px;
-    color: #1e3a8a;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 10px;
-}
-
-table, th, td {
-    border: 1px solid #23e8d8;
-}
-
-th, td {
-    padding: 8px;
-    text-align: left;
-    font-size: 0.9em;
-}
-
-th {
-    background-color: #e3f2fd;
-}
-
-.form-group {
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-}
-
-.form-group input {
-    margin-right: 10px;
-    padding: 5px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-
-.form-group button {
-    padding: 8px 12px;
-    border-radius: 8px;
-    background-color: #1e3a8a;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.form-group button:hover {
-    background-color: #273d9c;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-    transform: translateY(-2px);
-}
-
-button {
-    margin-right: 5px;
-    padding: 5px 10px;
-    border-radius: 8px;
-    background-color: #1e3a8a;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-button:hover {
-    background-color: #273d9c;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-    transform: translateY(-2px);
-}
-
-.header-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px; /* Add some margin at the bottom */
-}
-
-.logout-btn,
-.dashboard-btn {
-    background-color: #dc2626;
+  }
+  
+  .logout-btn,
+  .switch-btn {
+    background: linear-gradient(135deg, #ef4444, #f87171);
     color: white;
     padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
+  }
+  
+  .logout-btn:hover,
+  .switch-btn:hover {
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.6);
+    transform: translateY(-3px);
+  }
+  
+  .table-container {
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .table-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 40px rgba(255, 255, 255, 0.2);
+  }
+  
+  h1 {
+    font-size: 2.2em;
+    color: #3b82f6;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3), 2px 2px 10px rgba(59, 130, 246, 0.2);
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
+    -webkit-background-clip: text; /* For WebKit browsers (e.g., Safari, Chrome) */
+    background-clip: text; /* Standard property */
+    -webkit-text-fill-color: transparent; /* Ensures text color is transparent */
+}
+  
+  h2 {
+    color: #1e3a8a;
+    margin-bottom: 12px;
+    font-size: 1.5em;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 12px;
     font-size: 1em;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  
+  table,
+  th,
+  td {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  th {
+    background: rgba(59, 130, 246, 0.3);
+    color: #0593f2;
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  td {
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #0b4085;
+    transition: background-color 0.3s;
+  }
+  
+  td:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  button {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: white;
+    padding: 8px 16px;
     border-radius: 8px;
-    margin: 5px;
-    transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.logout-btn:hover,
-.dashboard-btn:hover {
-    background-color: #b91c1c;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-    transform: translateY(-2px);
-}
-
-.logout-btn:focus,
-.dashboard-btn:focus {
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.4);
+  }
+  
+  button:hover {
+    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+    transform: translateY(-3px);
+  }
+  
+  .form-group {
+    margin-bottom: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .form-group input {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(127, 28, 28, 0.15);
+    color: #d5b0b0;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s, transform 0.2s;
+  }
+  
+  .form-group input:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.6);
-}
-
-.dashboard-btn {
-    background-color: #3b82f6;
-}
-
-.dashboard-btn:hover {
-    background-color: #2563eb;
-}
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.4), inset 0 2px 5px rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  .form-group button {
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #34d399, #6ee7b7);
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+    box-shadow: 0 4px 10px rgba(52, 211, 153, 0.4);
+  }
+  
+  .form-group button:hover {
+    background: linear-gradient(135deg, #10b981, #34d399);
+    box-shadow: 0 6px 20px rgba(52, 211, 153, 0.6);
+    transform: translateY(-3px);
+  }
+  
