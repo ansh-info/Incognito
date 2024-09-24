@@ -1,5 +1,5 @@
 .question-page-container {
-  background-color: #f0f4f8;
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
@@ -11,16 +11,17 @@
 
 @keyframes fadeIn {
   from {
-      opacity: 0;
-      transform: scale(0.9);
+    opacity: 0;
+    transform: scale(0.9);
   }
   to {
-      opacity: 1;
-      transform: scale(1);
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
-.back-btn, .submit-btn {
+.back-btn,
+.submit-btn {
   background-color: #1e3a8a;
   color: white;
   padding: 8px 16px;
@@ -32,13 +33,15 @@
   cursor: pointer;
 }
 
-.back-btn:hover, .submit-btn:hover {
+.back-btn:hover,
+.submit-btn:hover {
   background-color: #273d9c;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
   transform: translateY(-2px);
 }
 
-.back-btn:focus, .submit-btn:focus {
+.back-btn:focus,
+.submit-btn:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.6);
 }
@@ -67,7 +70,7 @@
 }
 
 .test-results {
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -80,12 +83,12 @@
 
 @keyframes fadeInUp {
   from {
-      opacity: 0;
-      transform: translateY(20px);
+    opacity: 0;
+    transform: translateY(20px);
   }
   to {
-      opacity: 1;
-      transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
