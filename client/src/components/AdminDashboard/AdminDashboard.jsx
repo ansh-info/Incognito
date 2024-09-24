@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AdminDashboard.css';
-require('dotenv').config();
 
 function AdminDashboard({ setUser, setAdminRedirect }) {
     const [users, setUsers] = useState([]);
@@ -13,6 +12,8 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
     const [editingUser, setEditingUser] = useState(null);
     const [editingQuestion, setEditingQuestion] = useState(null);
     const [editingTestCase, setEditingTestCase] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState('');
 
     // State variables for suitable candidates and passed candidates
     const [candidates, setCandidates] = useState([]);
@@ -29,7 +30,7 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
 
     const fetchData = async (endpoint, setData) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}${endpoint}`);
+            const response = await axios.get(`http://localhost:5001${endpoint}`);
             setData(response.data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -43,7 +44,7 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
 
     const handleAddUser = async () => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/register`, newUser);
+            const response = await axios.post('http://localhost:5001/register', newUser);
             alert(response.data.message);
             setNewUser({ username: '', email: '', password: '', is_admin: false });
             fetchData('/admin/users', setUsers);
@@ -54,8 +55,7 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
 
     const handleAddQuestion = async () => {
         try {
-            require('dotenv').config();
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/admin/questions`, newQuestion);
+            const response = await axios.post('http://localhost:5001/admin/questions', newQuestion);
             alert(response.data.message);
             setNewQuestion({ title: '', description: '', difficulty: '' });
             fetchData('/questions', setQuestions);
@@ -66,7 +66,7 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
 
     const handleAddTestCase = async () => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/admin/test_cases`, newTestCase);
+            const response = await axios.post('http://localhost:5001/admin/test_cases', newTestCase);
             alert(response.data.message);
             setNewTestCase({ question_id: '', input: '', expected_output: '' });
             fetchData('/admin/test_cases', setTestCases);
@@ -77,7 +77,7 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
 
     const handleDelete = async (endpoint, id, fetchDataFunc) => {
         try {
-            const response = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/admin/${endpoint}/${id}`);
+            const response = await axios.delete(`http://localhost:5001/admin/${endpoint}/${id}`);
             alert(response.data.message);
             fetchDataFunc();
         } catch (error) {
@@ -91,7 +91,7 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
 
     const handleUpdateUser = async () => {
         try {
-            const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/admin/users/${editingUser.user_id}`, editingUser);
+            const response = await axios.put(`http://localhost:5001/admin/users/${editingUser.user_id}`, editingUser);
             alert(response.data.message);
             setEditingUser(null);
             fetchData('/admin/users', setUsers);
@@ -102,7 +102,7 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
 
     const handleUpdateQuestion = async () => {
         try {
-            const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/admin/questions/${editingQuestion.question_id}`, editingQuestion);
+            const response = await axios.put(`http://localhost:5001/admin/questions/${editingQuestion.question_id}`, editingQuestion);
             alert(response.data.message);
             setEditingQuestion(null);
             fetchData('/questions', setQuestions);
@@ -113,7 +113,7 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
 
     const handleUpdateTestCase = async () => {
         try {
-            const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/admin/test_cases/${editingTestCase.test_case_id}`, editingTestCase);
+            const response = await axios.put(`http://localhost:5001/admin/test_cases/${editingTestCase.test_case_id}`, editingTestCase);
             alert(response.data.message);
             setEditingTestCase(null);
             fetchData('/admin/test_cases', setTestCases);
@@ -134,7 +134,7 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
     // Function to handle sending interview emails to suitable candidates
     const handleSendInterviewEmail = async (candidate) => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/send-email-interview`, { userId: candidate.user_id });
+            const response = await axios.post('http://localhost:5001/api/send-email-interview', { userId: candidate.user_id });
             alert(response.data.message);
         } catch (error) {
             console.error('Error sending interview email:', error);
@@ -144,12 +144,27 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
     // Function to handle sending selection emails to passed candidates
     const handleSendSelectionEmail = async (candidate) => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/send-email-selected`, { userId: candidate.user_id });
+            const response = await axios.post('http://localhost:5001/api/send-email-selected', { userId: candidate.user_id });
             alert(response.data.message);
         } catch (error) {
             console.error('Error sending selection email:', error);
         }
     };
+
+    // Function to handle training/evaluating selected candidates
+    const handleTrainModel = async (candidate) => {
+        setLoading(true);
+        try {
+            // post request
+            const response = await axios.post('http://localhost:5001/api/train-model', { userId: candidate.user_id });
+            setMessage(response.data.message);
+        } catch (error) {
+            console.error('Error training model:', error);
+            setMessage('Failed to train model.');
+        }
+        setLoading(false);
+    };
+    
 
     return (
         <div className="admin-dashboard">
@@ -157,6 +172,14 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
             <div className="header-buttons">
                 <button onClick={handleLogout} className="logout-btn">Logout</button>
                 <button onClick={handleSwitchToQuestions} className="switch-btn">Switch to Questions</button>
+            </div>
+
+             {/* Train Model Button */}
+             <div style={{ marginBottom: '20px' }}>
+                <button onClick={handleTrainModel} disabled={loading}>
+                    {loading ? 'Training Model...' : 'Predict Candidates'}
+                </button>
+                {message && <p>{message}</p>}
             </div>
 
             {/* Existing tables for users, questions, and test cases */}
@@ -395,16 +418,22 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
                 </div>
             </div>
 
-            {/* Table for suitable candidates with interview email button */}
+            {/* Table for suitable candidates with a single interview email button */}
             <div className="table-container">
-                <h2>Suitable Candidates</h2>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h2>Suitable Candidates</h2>
+                    {/* Button to send interview emails to all candidates */}
+                    <button onClick={handleSendInterviewEmail}>
+                        Send Interview Emails to All
+                    </button>
+                </div>
+
                 <table>
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Username</th>
                             <th>Email</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -413,25 +442,28 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
                                 <td>{candidate.user_id}</td>
                                 <td>{candidate.username}</td>
                                 <td>{candidate.email}</td>
-                                <td>
-                                    <button onClick={() => handleSendInterviewEmail(candidate)}>Send Interview Email</button>
-                                </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
 
-            {/* Table for passed candidates with selection email button */}
+            {/* Table for passed candidates with a single selection email button */}
             <div className="table-container">
-                <h2>Passed Candidates</h2>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h2>Passed Candidates</h2>
+                    {/* Button to send selection emails to all passed candidates */}
+                    <button onClick={handleSendSelectionEmail}>
+                        Send Selection Emails to All
+                    </button>
+                </div>
+
                 <table>
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Username</th>
                             <th>Email</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -440,9 +472,6 @@ function AdminDashboard({ setUser, setAdminRedirect }) {
                                 <td>{candidate.user_id}</td>
                                 <td>{candidate.username}</td>
                                 <td>{candidate.email}</td>
-                                <td>
-                                    <button onClick={() => handleSendSelectionEmail(candidate)}>Send Selection Email</button>
-                                </td>
                             </tr>
                         ))}
                     </tbody>
