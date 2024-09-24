@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require("express");
 const mysql = require("mysql2");
 const bcrypt = require("bcrypt");
@@ -10,10 +9,10 @@ app.use(cors());
 app.use(express.json());
 
 const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: "",
+  user: "root",
+  password: "",
+  database: "db",
 });
 
 db.connect((err) => {
@@ -33,7 +32,7 @@ const hashPassword = async (password) => {
 // Endpoint to register a new user
 app.post("/register", async (req, res) => {
   const { username, email, password, is_admin, admin_code } = req.body;
-  const correctAdminCode = process.env.ADMIN_CODE; // Replace with your actual admin code
+  const correctAdminCode = "1234"; // Replace with your actual admin code
 
   if (is_admin && admin_code !== correctAdminCode) {
     return res
@@ -343,7 +342,7 @@ app.post("/submit", (req, res) => {
     const escapedCode = code
       .replace(/(["$`\\])/g, "\\$1")
       .replace(/\n/g, "\\n");
-    const dockerCommand = `docker run --rm --network mynetwork runtestcases python /app/runtestcases.py ${question_id} "${escapedCode}" '${testCasesJson}'`;
+    const dockerCommand = `docker run --rm --network {yournetwork} runtestcases python /app/runtestcases.py ${question_id} "${escapedCode}" '${testCasesJson}'`;
 
     console.log("Running command:", dockerCommand);
 
@@ -410,7 +409,7 @@ app.post("/run", (req, res) => {
     const escapedCode = code
       .replace(/(["$`\\])/g, "\\$1")
       .replace(/\n/g, "\\n");
-    const dockerCommand = `docker run --rm --network mynetwork runtestcases python /app/runtestcases.py ${question_id} "${escapedCode}" '${testCasesJson}'`;
+    const dockerCommand = `docker run --rm --network {yournetwork} runtestcases python /app/runtestcases.py ${question_id} "${escapedCode}" '${testCasesJson}'`;
 
     console.log("Running command:", dockerCommand);
 
@@ -467,14 +466,30 @@ app.post("/run", (req, res) => {
   });
 });
 
-// Endpoint to fetch suitable candidates
+// Endpoint to train model for suitable candidates using specific Python script
+app.post('/api/train-model', (req, res) => {
+  const { userId } = req.body;
+
+  // Execute the Python script to train model
+  exec(`python3 pathtoyour/prediction_model.py --user_id=${userId}`, (err, stdout, stderr) => {
+    if (err) {
+      console.error("Error executing train-model script:", err);
+      return res.status(500).json({ message: "Failed to train-model.", error: err.message });
+    }
+    console.log("train-model script output:", stdout);
+    res.json({ message: "Candidate Selection Completed Successfully." });
+  });
+});
+
+// Endpoint to fetch suitable candidates with prediction = 0
 app.get('/api/candidates', (req, res) => {
-  const query = "SELECT * FROM suitable_candidates";
+  const query = "SELECT * FROM suitable_candidates WHERE prediction = 0";
   db.query(query, (error, results) => {
     if (error) return res.status(500).send(error);
     res.json(results);
   });
 });
+
 
 // Endpoint to fetch passed candidates
 app.get('/api/passed-candidates', (req, res) => {
@@ -490,7 +505,7 @@ app.post('/api/send-email-interview', (req, res) => {
   const { userId } = req.body;
 
   // Execute the Python script to send interview emails
-  exec(`python3 emailclient/email-notification/email_interview.py --user_id=${userId}`, (err, stdout, stderr) => {
+  exec(`python3 pathtoyour/email-notification/email_interview.py --user_id=${userId}`, (err, stdout, stderr) => {
     if (err) {
       console.error("Error executing interview email script:", err);
       return res.status(500).json({ message: "Failed to send interview email.", error: err.message });
@@ -505,7 +520,7 @@ app.post('/api/send-email-selected', (req, res) => {
   const { userId } = req.body;
 
   // Execute the Python script to send selection emails
-  exec(`python3 emailclient/email-notification/email_selected.py --user_id=${userId}`, (err, stdout, stderr) => {
+  exec(`python3 pathtoyour/email-notification/email_selected.py --user_id=${userId}`, (err, stdout, stderr) => {
     if (err) {
       console.error("Error executing selected email script:", err);
       return res.status(500).json({ message: "Failed to send selected email.", error: err.message });
