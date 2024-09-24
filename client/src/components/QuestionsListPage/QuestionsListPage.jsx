@@ -7,7 +7,7 @@ function QuestionsListPage({ setSelectedQuestion, user, setAdminRedirect }) {
 
     useEffect(() => {
         if (user) {
-            axios.get(`${process.env.REACT_APP_BACKEND_URL}/questions`)
+            axios.get('http://localhost:5001/questions')
                 .then(response => {
                     const questionMap = response.data.reduce((acc, question) => {
                         acc[question.question_id] = question;
