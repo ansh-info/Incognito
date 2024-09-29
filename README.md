@@ -9,8 +9,8 @@ Key Features:
 - Interactive UI: A responsive and intuitive user interface where users can select problems, write code in multiple languages, and receive real-time feedback.
 - Dockerized Environment: The platform runs entirely within Docker containers, ensuring consistency across all systems. Test cases are executed in isolated containers.
 - Database-Driven Challenges: Questions and corresponding test cases are stored in a MySQL database, allowing for easy management and scalability.
-- Multi-Language Support: The platform supports multiple programming languages, allowing users to practice in their language of choice.
 - Automated Test Case Execution: Solutions are automatically tested against multiple test cases stored in the database, providing immediate feedback to the user.
+<!-- - Multi-Language Support: The platform supports multiple programming languages, allowing users to practice in their language of choice. -->
 
 ## Technology Stack:
 
@@ -18,7 +18,7 @@ Key Features:
 - Frontend: HTML, CSS, JavaScript
 - Database: MySQL (for questions and test case storage)
 - Containerization: Docker, Docker Compose
-- Programming Languages Supported: Python, JavaScript (additional        languages to be added)
+- Programming Languages Supported: Python(additional        languages to be added)
 
 
 ## Webapp
@@ -68,7 +68,8 @@ WEBAPP
     ├── package-lock.json
     └── package.json
 ```
-
+### Webapplication
+![Question Page](/images/questionpage.png)
 
 ## Installation and Setup
 
@@ -93,7 +94,6 @@ npm install
 Build and run Docker containers: The entire environment, including the MySQL database and Node.js backend, is encapsulated within Docker containers. Run the following command to build and start the containers:
 
 ```bash
-Copy code
 docker-compose up --build
 ```
 
@@ -112,6 +112,9 @@ Serve the frontend on http://localhost:3000.
 Database Configuration: By default, the Docker environment creates a MySQL container where all the questions and test cases are stored. You can modify the database schema by editing the migration files located in the /config/db.js.
 
 Access the application: Once the containers are running, open your browser and go to http://localhost:3000 to access the platform.
+
+### Admindashboard
+![Admin Dashboard](/images/admindashboard.png)
 
 ## Database Schema
 
@@ -151,6 +154,8 @@ If you want to build the Docker image yourself, you can follow these steps:
 
 docker build -t runtestcases .
 ````
+### Sending Email to Suitable Candidates
+![Sutitablecandidates](/images/sutitablecandidates.png)
 
 ## Running Test Cases in Docker
 
@@ -199,7 +204,6 @@ We created a Dockerfile to build an image for running the Python script (runtest
 - The result is sent back to the frontend, displaying whether the test cases passed or failed, along with execution details.
 
 ```bash
-Copy code
 python RunTestCases.py --question_id=123 --language=python
 ```
 
