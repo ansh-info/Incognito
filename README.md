@@ -9,7 +9,7 @@ Key Features:
 - Interactive UI: A responsive and intuitive user interface where users can select problems, write code in multiple languages, and receive real-time feedback.
 - Dockerized Environment: The platform runs entirely within Docker containers, ensuring consistency across all systems. Test cases are executed in isolated containers.
 - Database-Driven Challenges: Questions and corresponding test cases are stored in a MySQL database, allowing for easy management and scalability.
-- Multi-Language Support: The platform supports multiple programming languages, allowing users to practice in their language of choice.
+<!-- - Multi-Language Support: The platform supports multiple programming languages, allowing users to practice in their language of choice. -->
 - Automated Test Case Execution: Solutions are automatically tested against multiple test cases stored in the database, providing immediate feedback to the user.
 
 ## Technology Stack:
@@ -18,7 +18,7 @@ Key Features:
 - Frontend: HTML, CSS, JavaScript
 - Database: MySQL (for questions and test case storage)
 - Containerization: Docker, Docker Compose
-- Programming Languages Supported: Python, JavaScript (additional        languages to be added)
+- Programming Languages Supported: Python(additional        languages to be added)
 
 
 ## Webapp
@@ -199,7 +199,6 @@ We created a Dockerfile to build an image for running the Python script (runtest
 - The result is sent back to the frontend, displaying whether the test cases passed or failed, along with execution details.
 
 ```bash
-Copy code
 python RunTestCases.py --question_id=123 --language=python
 ```
 
