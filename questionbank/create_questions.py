@@ -1,15 +1,13 @@
 import sys
 import os
 
-# Add the parent directory (the directory that contains both 'connection' and 'questionbank') to sys.path
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.insert(0, parent_dir)
+from add_parent_path import add_parent_dir_to_path
+add_parent_dir_to_path()
 
 from connection.db_connection import get_db_connection
 import mysql.connector
 from mysql.connector import errorcode
 
-# Remove the local DB_NAME assignment and use it from the connection module
 cnx, DB_NAME = get_db_connection()
 
 TABLES = {

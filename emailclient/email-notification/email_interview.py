@@ -6,27 +6,16 @@ from email.mime.text import MIMEText
 from dotenv import load_dotenv
 import logging
 
+from add_parent_path import add_parent_dir_to_path
+add_parent_dir_to_path()
+
+from connection.db_connection import get_db_connection
+
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Load environment variables from .env file
 load_dotenv()
-
-# MySQL database connection details for user data
-db_config = {
-    'user': os.getenv('DB_USER'),
-    'password': os.getenv('DB_PASSWORD'),
-    'host': os.getenv('DB_HOST'),
-    'database': os.getenv('DB_NAME')
-}
-
-# MySQL database connection details for logging
-log_db_config = {
-    'user': os.getenv('LOG_DB_USER'),
-    'password': os.getenv('LOG_DB_PASSWORD'),
-    'host': os.getenv('LOG_DB_HOST'),
-    'database': os.getenv('LOG_DB_NAME')
-}
 
 # Email sender details
 smtp_user = os.getenv('SMTP_USER')
@@ -54,9 +43,13 @@ The Doodle Team
 # Function to get user data from the database
 def get_user_data():
     logging.info("Fetching user data from the database.")
+    cnx, db_name = get_db_connection()  # Get connection from db_connection.py
+    if cnx is None:
+        logging.error("Failed to connect to the database.")
+        return []
+    
     try:
-        connection = mysql.connector.connect(**db_config)
-        cursor = connection.cursor(dictionary=True)
+        cursor = cnx.cursor(dictionary=True)
         query = "SELECT user_id, username, email FROM suitable_candidates"
         cursor.execute(query)
         result = cursor.fetchall()
@@ -67,25 +60,29 @@ def get_user_data():
         return []
     finally:
         cursor.close()
-        connection.close()
+        cnx.close()
 
-# Function to log email sending status to the logging database
+# Function to log email sending status to the database
 def log_email_status(user_id, email, status, error_message=None):
+    cnx, db_name = get_db_connection()  # Reuse the same connection function
+    if cnx is None:
+        logging.error(f"Failed to connect to the database for logging: {email}")
+        return
+    
     try:
-        connection = mysql.connector.connect(**log_db_config)
-        cursor = connection.cursor()
+        cursor = cnx.cursor()
         query = """
         INSERT INTO email_interview_logging (user_id, email, status, error_message)
         VALUES (%s, %s, %s, %s)
         """
         cursor.execute(query, (user_id, email, status, error_message))
-        connection.commit()
+        cnx.commit()
         logging.info(f"Logged email status for {email}: {status}")
     except mysql.connector.Error as err:
         logging.error(f"Error logging email status for {email}: {err}")
     finally:
         cursor.close()
-        connection.close()
+        cnx.close()
 
 # Function to send email using SMTP
 def send_email(user):

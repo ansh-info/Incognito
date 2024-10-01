@@ -1,11 +1,13 @@
 import sys
 import os
 
-# Add the parent directory to sys.path to access the connection module
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.insert(0, parent_dir)
+from add_parent_path import add_parent_dir_to_path
+add_parent_dir_to_path()
 
-from connection.db_connection import get_db_connection  # Import the connection function
+from connection.db_connection import get_db_connection
+
+import mysql.connector 
+from mysql.connector import errorcode
 
 # Sample data
 questions = [
@@ -156,15 +158,22 @@ def create_tables(cursor):
     cursor.execute(create_test_cases_table)
 
 def insert_data(cursor):
-    add_question = ("INSERT INTO questions "
-                    "(question_id, title, description, difficulty) "
-                    "VALUES (%s, %s, %s, %s)")
+    # Using ON DUPLICATE KEY UPDATE to handle duplicates
+    add_question = (
+        "INSERT INTO questions (question_id, title, description, difficulty) "
+        "VALUES (%s, %s, %s, %s) "
+        "ON DUPLICATE KEY UPDATE "
+        "title=VALUES(title), description=VALUES(description), difficulty=VALUES(difficulty)"
+    )
     for question in questions:
         cursor.execute(add_question, (question['question_id'], question['title'], question['description'], question['difficulty']))
 
-    add_test_case = ("INSERT INTO test_cases "
-                     "(test_case_id, question_id, input, expected_output) "
-                     "VALUES (%s, %s, %s, %s)")
+    add_test_case = (
+        "INSERT INTO test_cases (test_case_id, question_id, input, expected_output) "
+        "VALUES (%s, %s, %s, %s) "
+        "ON DUPLICATE KEY UPDATE "
+        "input=VALUES(input), expected_output=VALUES(expected_output)"
+    )
     for test_case in test_cases:
         cursor.execute(add_test_case, (test_case['test_case_id'], test_case['question_id'], test_case['input'], test_case['expected_output']))
 

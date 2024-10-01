@@ -1,18 +1,12 @@
 import mysql.connector
 from mysql.connector import errorcode
-from dotenv import load_dotenv
-import os
 
-# Load environment variables from .env file
-load_dotenv()
+from add_parent_path import add_parent_dir_to_path
+add_parent_dir_to_path()
 
-# MySQL logging database connection details
-log_db_config = {
-    'user': os.getenv('LOG_DB_USER1'),
-    'password': os.getenv('LOG_DB_PASSWORD1'),
-    'host': os.getenv('LOG_DB_HOST1'),
-    'database': os.getenv('LOG_DB_NAME1')
-}
+from connection.db_connection import get_db_connection
+
+cnx, DB_NAME = get_db_connection()
 
 # Table creation statements
 TABLES = {}
@@ -37,25 +31,30 @@ def create_tables(cursor):
         try:
             print(f"Creating table {table_name}: ", end='')
             cursor.execute(table_description)
+            print("OK")
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
                 print("already exists.")
             else:
                 print(err.msg)
-        else:
-            print("OK")
 
 def main():
+    # Get the database connection and database name
+    cnx, db_name = get_db_connection()
+
+    if cnx is None or db_name is None:
+        print("Connection failed.")
+        return
+
     try:
-        cnx = mysql.connector.connect(**log_db_config)
         cursor = cnx.cursor()
 
         # Create tables
         create_tables(cursor)
 
     except mysql.connector.Error as err:
-        print(err)
-    else:
+        print(f"Error: {err}")
+    finally:
         cursor.close()
         cnx.close()
 
