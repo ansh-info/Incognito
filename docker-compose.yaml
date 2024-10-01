@@ -1,0 +1,29 @@
+# Make sure to first build runtestcases(python-env) and doodle(webapp)
+networks:
+  doodle:
+    driver: bridge
+
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Passwd
+      MYSQL_DATABASE: doodle  # Optional if you need the initial DB created
+    volumes:
+      - ./db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - doodle
+
+  doodle:
+    image: doodle  # Assuming `doodle` is a pre-built image
+    container_name: doodle
+    networks:
+      - doodle
+    ports:
+      - "5001:5001"
+      - "3000:3000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
