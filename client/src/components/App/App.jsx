@@ -64,7 +64,7 @@ function App() {
         <div className="App">
             <header className="App-header">
                 <div className="header-bar">
-                    <h1 className="app-title">Doodle</h1>
+                    <h1 className="app-title">Incognito</h1>
                     <div className="header-buttons">
                         <button onClick={handleLogout} className="logout-btn">
                             Logout
