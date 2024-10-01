@@ -1,11 +1,12 @@
 import sys
 import os
 
-# Add the parent directory to sys.path to access the connection module
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.insert(0, parent_dir)
+from add_parent_path import add_parent_dir_to_path
+add_parent_dir_to_path()
 
-from connection.db_connection import get_db_connection  # Import the connection function
+from connection.db_connection import get_db_connection
+import mysql.connector 
+from mysql.connector import errorcode
 
 try:
     # Get the database connection and database name
