@@ -471,7 +471,7 @@ app.post('/api/train-model', (req, res) => {
   const { userId } = req.body;
 
   // Execute the Python script to train model
-  exec(`python3 pathtoyour/prediction_model.py --user_id=${userId}`, (err, stdout, stderr) => {
+  exec(`python3 selection_algorithm/prediction_model.py --user_id=${userId}`, (err, stdout, stderr) => {
     if (err) {
       console.error("Error executing train-model script:", err);
       return res.status(500).json({ message: "Failed to train-model.", error: err.message });
@@ -505,7 +505,7 @@ app.post('/api/send-email-interview', (req, res) => {
   const { userId } = req.body;
 
   // Execute the Python script to send interview emails
-  exec(`python3 pathtoyour/email-notification/email_interview.py --user_id=${userId}`, (err, stdout, stderr) => {
+  exec(`python3 emailclient/email-notification/email_interview.py --user_id=${userId}`, (err, stdout, stderr) => {
     if (err) {
       console.error("Error executing interview email script:", err);
       return res.status(500).json({ message: "Failed to send interview email.", error: err.message });
@@ -520,7 +520,7 @@ app.post('/api/send-email-selected', (req, res) => {
   const { userId } = req.body;
 
   // Execute the Python script to send selection emails
-  exec(`python3 pathtoyour/email-notification/email_selected.py --user_id=${userId}`, (err, stdout, stderr) => {
+  exec(`python3 emailclient/email-notification/email_selected.py --user_id=${userId}`, (err, stdout, stderr) => {
     if (err) {
       console.error("Error executing selected email script:", err);
       return res.status(500).json({ message: "Failed to send selected email.", error: err.message });

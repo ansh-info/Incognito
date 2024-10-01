@@ -24,9 +24,9 @@ load_dotenv()
 
 db_config = {
     'user': 'root',
-    'password': '9084Mysql#',
-    'host': '0.0.0.0',
-    'database': 'doodle'
+    'password': 'root',
+    'host': 'localhost',
+    'database': 'incognito'
 }
 
 def create_db_connection(config):
@@ -65,7 +65,7 @@ def scale_features(df, scaler):
     return df, df_scaled  # Return both original and scaled DataFrames
 
 
-def load_model_and_scaler(model_file='/Users/anshkumar/Developer/code/node/node20.16.0/test/selectionalgorithm/model/logistic_regression_model.pkl', scaler_file='/Users/anshkumar/Developer/code/node/node20.16.0/test/selectionalgorithm/model/scaler.pkl'):
+def load_model_and_scaler(model_file='model/logistic_regression_model.pkl', scaler_file='model/scaler.pkl'):
     """Load the logistic regression model and scaler from pickle files."""
     with open(model_file, 'rb') as model_f:
         model = pickle.load(model_f)
