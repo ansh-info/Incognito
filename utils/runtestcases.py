@@ -8,8 +8,8 @@ def connect_to_db():
         return mysql.connector.connect(
             host='mysql', # You can also use '{}' - The ip of your mysql container
             user='root',
-            password='Passwd',
-            database='DB',
+            password='root',
+            database='incognito',
             port=3306
         )
     except mysql.connector.Error as err:
