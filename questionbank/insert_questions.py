@@ -1,16 +1,11 @@
+import sys
 import os
-import mysql.connector
-from mysql.connector import errorcode
-from dotenv import load_dotenv
 
-# MySQL database connection details
-config = {
-    'user': os.getenv('DB_USER'),
-    'password': os.getenv('DB_PASSWORD'),
-    'host': os.getenv('DB_HOST'),
-    'database': os.getenv('DB_NAME'),
-    'port': os.getenv('DB_PORT'),  # Replace with your MySQL container port if different
-}
+# Add the parent directory to sys.path to access the connection module
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, parent_dir)
+
+from connection.db_connection import get_db_connection  # Import the connection function
 
 # Sample data
 questions = [
@@ -174,8 +169,14 @@ def insert_data(cursor):
         cursor.execute(add_test_case, (test_case['test_case_id'], test_case['question_id'], test_case['input'], test_case['expected_output']))
 
 def main():
+    # Get the database connection and database name
+    cnx, db_name = get_db_connection()
+    
+    if cnx is None or db_name is None:
+        print("Connection failed.")
+        exit(1)
+
     try:
-        cnx = mysql.connector.connect(**config)
         cursor = cnx.cursor()
         create_tables(cursor)
         insert_data(cursor)

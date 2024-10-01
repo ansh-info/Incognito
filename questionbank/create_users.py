@@ -1,16 +1,11 @@
+import sys
 import os
-import mysql.connector
-from mysql.connector import errorcode
-from dotenv import load_dotenv
 
-# MySQL database connection details
-config = {
-    'user': os.getenv('DB_USER'),
-    'password': os.getenv('DB_PASSWORD'),
-    'host': os.getenv('DB_HOST'),
-    'database': os.getenv('DB_NAME'),
-    'port': os.getenv('DB_PORT'),  # Replace with your MySQL container port if different
-}
+# Add the parent directory to sys.path to access connection module
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, parent_dir)
+
+from connection.db_connection import get_db_connection  # Import the connection function
 
 # Table creation statements
 TABLES = {}
@@ -46,9 +41,9 @@ TABLES['submissions'] = (
     ")"
 )
 
-def create_database(cursor):
+def create_database(cursor, db_name):
     try:
-        cursor.execute(f"CREATE DATABASE IF NOT EXISTS {config['database']} DEFAULT CHARACTER SET 'utf8'")
+        cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_name} DEFAULT CHARACTER SET 'utf8'")
     except mysql.connector.Error as err:
         print(f"Failed creating database: {err}")
         exit(1)
@@ -68,12 +63,18 @@ def create_tables(cursor):
             print("OK")
 
 def main():
+    # Get the database connection and database name from the connection module
+    cnx, db_name = get_db_connection()
+    
+    if cnx is None or db_name is None:
+        print("Connection failed.")
+        exit(1)
+    
     try:
-        cnx = mysql.connector.connect(user=config['user'], password=config['password'], host=config['host'])
         cursor = cnx.cursor()
-        create_database(cursor)
-        cnx.database = config['database']
-        create_tables(cursor)
+        create_database(cursor, db_name)  # Create database if it doesn't exist
+        cnx.database = db_name  # Switch to the created database
+        create_tables(cursor)    # Create the required tables
         cursor.close()
         cnx.close()
     except mysql.connector.Error as err:

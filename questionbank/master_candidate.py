@@ -1,16 +1,13 @@
-import mysql.connector
-from mysql.connector import errorcode
+import sys
+import os
 
-# MySQL database connection details (hardcoded)
-config = {
-    'user': 'root',         # Replace with your DB username
-    'password': '9084Mysql#', # Replace with your DB password
-    'host': '0.0.0.0',         # Replace with your DB host (e.g., 'localhost' or '127.0.0.1')
-    'database': 'doodle',   # If you want to include the database here, uncomment and set the database name
-    'port': '3306',       # If needed, replace with your DB port, usually 3306 for MySQL
-}
+# Add the parent directory to sys.path to access the connection module
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, parent_dir)
 
-DB_NAME = 'doodle'            # Replace with your actual database name
+from connection.db_connection import get_db_connection  # Import the connection function
+
+DB_NAME = 'doodle'  # Replace with your actual database name
 TABLES = {}
 
 TABLES['master_candidates'] = (
@@ -36,20 +33,19 @@ TABLES['master_candidates'] = (
     "  PRIMARY KEY (`candidate_id`)"
     ") ENGINE=InnoDB")
 
-def create_database(cursor):
+def create_database(cursor, db_name):
     try:
         cursor.execute(
-            f"CREATE DATABASE {DB_NAME} DEFAULT CHARACTER SET 'utf8'")
-        print(f"Database {DB_NAME} created successfully.")
+            f"CREATE DATABASE IF NOT EXISTS {db_name} DEFAULT CHARACTER SET 'utf8'")
+        print(f"Database {db_name} created successfully.")
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_DB_CREATE_EXISTS:
-            print(f"Database {DB_NAME} already exists.")
+            print(f"Database {db_name} already exists.")
         else:
             print(f"Failed to create database: {err}")
             exit(1)
 
 def create_tables(cursor):
-    cursor.execute(f"USE {DB_NAME}")
     for table_name in TABLES:
         table_description = TABLES[table_name]
         try:
@@ -63,10 +59,16 @@ def create_tables(cursor):
                 print(err.msg)
 
 def main():
+    # Get the database connection and database name
+    cnx, db_name = get_db_connection()
+
+    if cnx is None or db_name is None:
+        print("Connection failed.")
+        exit(1)
+
     try:
-        cnx = mysql.connector.connect(**config)
         cursor = cnx.cursor()
-        create_database(cursor)
+        create_database(cursor, db_name)
         create_tables(cursor)
         cursor.close()
         cnx.close()

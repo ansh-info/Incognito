@@ -1,41 +1,42 @@
-import mysql.connector
-from mysql.connector import errorcode
+import sys
+import os
 
-# Database connection details
-config = {
-    'user': 'root',
-    'password': '9084Mysql#',
-    'host': '127.0.0.1',
-    'raise_on_warnings': True
-}
+# Add the parent directory to sys.path to access the connection module
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, parent_dir)
+
+from connection.db_connection import get_db_connection  # Import the connection function
 
 try:
-    # Connect to MySQL server (not specifying database)
-    print("Connecting to MySQL server...")
-    cnx = mysql.connector.connect(**config)
+    # Get the database connection and database name
+    cnx, db_name = get_db_connection()
+
+    if cnx is None or db_name is None:
+        print("Connection failed.")
+        exit(1)
+
     cursor = cnx.cursor()
 
-    # Check if database exists
-    database_name = 'doodle'
-    cursor.execute("SHOW DATABASES LIKE %s", (database_name,))
+    # Check if the database exists
+    cursor.execute("SHOW DATABASES LIKE %s", (db_name,))
     database_exists = cursor.fetchone()
 
     if not database_exists:
-        # Create database if it does not exist
-        print(f"Database '{database_name}' does not exist. Creating database...")
-        cursor.execute(f"CREATE DATABASE {database_name}")
+        # Create the database if it does not exist
+        print(f"Database '{db_name}' does not exist. Creating database...")
+        cursor.execute(f"CREATE DATABASE {db_name}")
     else:
-        print(f"Database '{database_name}' already exists.")
+        print(f"Database '{db_name}' already exists.")
 
     # Select the database
-    cursor.execute(f"USE {database_name}")
+    cursor.execute(f"USE {db_name}")
 
-    # Check if table exists
+    # Check if the table exists
     cursor.execute("SHOW TABLES LIKE 'suitable_candidates'")
     table_exists = cursor.fetchone()
 
     if not table_exists:
-        # Create table if it does not exist
+        # Create the table if it does not exist
         print("Table 'suitable_candidates' does not exist. Creating table...")
         create_table_query = """
         CREATE TABLE suitable_candidates (
