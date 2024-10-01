@@ -9,10 +9,10 @@ app.use(cors());
 app.use(express.json());
 
 const db = mysql.createConnection({
-  host: "",
+  host: "localhost",
   user: "root",
-  password: "",
-  database: "db",
+  password: "root",
+  database: "incognito",
 });
 
 db.connect((err) => {
@@ -342,7 +342,7 @@ app.post("/submit", (req, res) => {
     const escapedCode = code
       .replace(/(["$`\\])/g, "\\$1")
       .replace(/\n/g, "\\n");
-    const dockerCommand = `docker run --rm --network {yournetwork} runtestcases python /app/runtestcases.py ${question_id} "${escapedCode}" '${testCasesJson}'`;
+    const dockerCommand = `docker run --rm --network python runtestcases python /app/runtestcases.py ${question_id} "${escapedCode}" '${testCasesJson}'`;
 
     console.log("Running command:", dockerCommand);
 
@@ -409,7 +409,7 @@ app.post("/run", (req, res) => {
     const escapedCode = code
       .replace(/(["$`\\])/g, "\\$1")
       .replace(/\n/g, "\\n");
-    const dockerCommand = `docker run --rm --network {yournetwork} runtestcases python /app/runtestcases.py ${question_id} "${escapedCode}" '${testCasesJson}'`;
+    const dockerCommand = `docker run --rm --network python runtestcases python /app/runtestcases.py ${question_id} "${escapedCode}" '${testCasesJson}'`;
 
     console.log("Running command:", dockerCommand);
 

@@ -6,7 +6,7 @@ node_modules/
 npm-debug.log*
 
 # Ignore environment variable files
-.env
+# .env
 
 # Ignore any logs
 *.log
@@ -19,3 +19,5 @@ yarn.lock
 /dist
 /build
 
+# Python
+__pycache__/
