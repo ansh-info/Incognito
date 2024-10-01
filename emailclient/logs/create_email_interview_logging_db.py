@@ -1,23 +1,15 @@
 import mysql.connector
 from mysql.connector import errorcode
-from dotenv import load_dotenv
-import os
 
-# Load environment variables from .env file
-load_dotenv()
+from add_parent_path import add_parent_dir_to_path
+add_parent_dir_to_path()
 
-# MySQL logging database connection details
-log_db_config = {
-    'user': os.getenv('LOG_DB_USER'),
-    'password': os.getenv('LOG_DB_PASSWORD'),
-    'host': os.getenv('LOG_DB_HOST')
-}
+from connection.db_connection import get_db_connection
 
-# Database and table creation statements
-DB_NAME = 'doodle'
+cnx, DB_NAME = get_db_connection()
 
 TABLES = {}
-TABLES['email_interview_loggs'] = (
+TABLES['email_interview_logging'] = (
     "CREATE TABLE `email_interview_logging` ("
     "  `id` INT AUTO_INCREMENT PRIMARY KEY,"
     "  `user_id` INT NOT NULL,"
@@ -32,6 +24,7 @@ def create_database(cursor):
     try:
         cursor.execute(
             f"CREATE DATABASE {DB_NAME} DEFAULT CHARACTER SET 'utf8'")
+        print(f"Database {DB_NAME} created successfully.")
     except mysql.connector.Error as err:
         print(f"Failed creating database: {err}")
         exit(1)
@@ -42,24 +35,30 @@ def create_tables(cursor):
         try:
             print(f"Creating table {table_name}: ", end='')
             cursor.execute(table_description)
+            print("OK")
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
                 print("already exists.")
             else:
                 print(err.msg)
-        else:
-            print("OK")
 
 def main():
+    # Get the database connection and database name
+    cnx, db_name = get_db_connection()
+
+    if cnx is None or db_name is None:
+        print("Connection failed.")
+        return
+
     try:
-        cnx = mysql.connector.connect(**log_db_config)
         cursor = cnx.cursor()
 
-        # Create database
+        # Try to switch to the existing database
         try:
             cnx.database = DB_NAME
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_BAD_DB_ERROR:
+                print(f"Database {DB_NAME} does not exist. Creating it...")
                 create_database(cursor)
                 cnx.database = DB_NAME
             else:
@@ -70,8 +69,8 @@ def main():
         create_tables(cursor)
 
     except mysql.connector.Error as err:
-        print(err)
-    else:
+        print(f"Error: {err}")
+    finally:
         cursor.close()
         cnx.close()
 
