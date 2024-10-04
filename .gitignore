@@ -21,3 +21,4 @@ yarn.lock
 
 # Python
 __pycache__/
+.ipynb_checkpoints/
