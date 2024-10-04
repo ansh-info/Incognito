@@ -1,6 +1,7 @@
-# Make sure to first build runtestcases(python-env) and doodle(webapp)
+version: '3.8'  # Updated version to use the 'depends_on' condition
+
 networks:
-  doodle:
+  python:
     driver: bridge
 
 services:
@@ -8,22 +9,61 @@ services:
     image: mysql:latest
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: Passwd
-      MYSQL_DATABASE: doodle  # Optional if you need the initial DB created
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: incognito
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
     volumes:
       - ./db_data:/var/lib/mysql
     ports:
       - "3306:3306"
     networks:
-      - doodle
+      - python
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+    restart: unless-stopped
 
-  doodle:
-    image: doodle  # Assuming `doodle` is a pre-built image
-    container_name: doodle
+  runtestcases:
+    build:
+      context: ./utils  # Folder where the Dockerfile for runtestcases is located
+      dockerfile: Dockerfile
+    container_name: runtestcases
     networks:
-      - doodle
+      - python
+    volumes:
+      - ./utils:/app  # Optional, mounting utils folder inside the container
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: incognito
+    command: ["echo", "runtestcases build complete"]  # Build but do not run
+    depends_on:
+      - db
+
+  webapplication:
+    build: 
+      context: .
+      dockerfile: Dockerfile  # Assuming the Dockerfile is in the root directory
+    container_name: incognito
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: incognito
+    networks:
+      - python
     ports:
       - "5001:5001"
       - "3000:3000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      db:
+        condition: service_healthy  # Ensure db is fully up before starting
+      runtestcases:
+        condition: service_started  # Ensure runtestcases has been built first
