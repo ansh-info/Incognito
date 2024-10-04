@@ -6,8 +6,8 @@ from email.mime.text import MIMEText
 from dotenv import load_dotenv
 import logging
 
-from add_parent_path import add_parent_dir_to_path
-add_parent_dir_to_path()
+from __init__ import path
+path()
 
 from connection.db_connection import get_db_connection
 

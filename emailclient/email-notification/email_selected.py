@@ -7,8 +7,8 @@ from dotenv import load_dotenv
 import logging
 
 # Add the parent directory to sys.path to access the connection module
-from add_parent_path import add_parent_dir_to_path
-add_parent_dir_to_path()
+from __init__ import path
+path()
 
 from connection.db_connection import get_db_connection  # Import the connection function
 
