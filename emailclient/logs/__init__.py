@@ -1,7 +1,7 @@
 import sys
 import os
 
-def add_parent_dir_to_path():
+def path():
     # Get the parent directory path
     parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
     

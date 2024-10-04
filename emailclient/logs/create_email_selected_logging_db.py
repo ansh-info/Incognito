@@ -1,8 +1,8 @@
 import mysql.connector
 from mysql.connector import errorcode
 
-from add_parent_path import add_parent_dir_to_path
-add_parent_dir_to_path()
+from __init__ import path
+path()
 
 from connection.db_connection import get_db_connection
 
