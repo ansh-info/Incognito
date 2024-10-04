@@ -14,9 +14,8 @@ from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.utils import resample
 import pickle
 
-
-github_uers = pd.read_csv('csv/github_users.csv', on_bad_lines='skip')
-sof_users = pd.read_csv('csv/github_users.csvallsof.csv')
+github_uers = pd.read_csv('github.csv', on_bad_lines='skip')
+sof_users = pd.read_csv('stackoverflow.csv')
 
 sof_users['github_username'] = sof_users['githubUrl'].apply(lambda x: x.split('/').pop() if isinstance(x, str) else None) #applying this function on the whole column also checking conv nans
 
