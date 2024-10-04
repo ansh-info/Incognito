@@ -12,14 +12,6 @@ Key Features:
 - Automated Test Case Execution: Solutions are automatically tested against multiple test cases stored in the database, providing immediate feedback to the user.
 <!-- - Multi-Language Support: The platform supports multiple programming languages, allowing users to practice in their language of choice. -->
 
-## Technology Stack:
-
-- Backend: Node.js, Express.js
-- Frontend: HTML, CSS, JavaScript
-- Database: MySQL (for questions and test case storage)
-- Containerization: Docker, Docker Compose
-- Programming Languages Supported: Python(additional        languages to be added)
-
 ### Webapplication
 ![Question Page](/images/questionpage.png)
 
@@ -86,10 +78,39 @@ git clone https://github.com/ansh-info/Incognito
 cd Incognito
 ````
 
-Install backend dependencies:
+### To run the repo locally
+
+Firstly make sure to set the env(connection/.env and emailclient/.env {for the emailclient - smtp password and tht server}) variables in the connection folder for your mysql database container.
+Then pull and start the mysql docker container and connect it to the docker network.
+Docker Command to run the mysql container:
+
 ```bash
-npm install
+docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -d mysql
 ```
+
+Docker Command to connect the mysql container:
+
+```bash
+docker network create python
+docker network connect python mysql                                                                                                                                                        
+```
+
+Then Build the Isolated Docker container to run the python test-cases
+
+```bash
+cd utils
+docker build -t runtestcases .
+```
+
+Install backend dependencies:
+
+```bash
+python3 scripts.py
+npm install
+npm start
+```
+
+### To build repo as a docker container
 
 Build and run Docker containers: The entire environment, including the MySQL database and Node.js backend, is encapsulated within Docker containers. Run the following command to build and start the containers:
 
@@ -214,6 +235,14 @@ python RunTestCases.py --question_id=123 --language=python
 - Backend fetches the corresponding test cases from the database.
 - Code is run inside a Docker container.
 - Results are returned to the user, showing test case pass/fail status and execution time.
+
+## Technology Stack:
+
+- Backend: Node.js, Express.js
+- Frontend: HTML, CSS, JavaScript
+- Database: MySQL (for questions and test case storage)
+- Containerization: Docker, Docker Compose
+- Programming Languages Supported: Python(additional        languages to be added)
 
 ## Future Updates
 
