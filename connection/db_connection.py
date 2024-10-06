@@ -2,6 +2,7 @@ import mysql.connector
 import os
 from mysql.connector import errorcode
 from dotenv import load_dotenv
+from sqlalchemy import create_engine  # Import for SQLAlchemy
 # Load environment variables from .env file
 load_dotenv()
 
@@ -45,3 +46,15 @@ def get_db_connection():
         else:
             print(f"Error: {err}")
             return None, None
+
+def get_sqlalchemy_engine():
+    db_name = os.getenv('DB_NAME')
+    try:
+        # Create the SQLAlchemy engine
+        engine = create_engine(f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{db_name}")
+        print(f"SQLAlchemy engine for database '{db_name}' created successfully.")
+        return engine, db_name
+    except Exception as err:
+        print(f"Error creating SQLAlchemy engine: {err}")
+        return None, None
+
