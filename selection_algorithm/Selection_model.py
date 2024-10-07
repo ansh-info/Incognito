@@ -14,8 +14,20 @@ from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.utils import resample
 import pickle
 
-github_uers = pd.read_csv('github.csv', on_bad_lines='skip')
-sof_users = pd.read_csv('stackoverflow.csv')
+from __init__ import path
+path()
+from connection.db_connection import get_sqlalchemy_engine
+
+# Get SQLAlchemy engine and database name
+engine, DB_NAME = get_sqlalchemy_engine()
+
+# Fetch data from 'github' table
+query_github = "SELECT * FROM github_fetch"
+github_uers = pd.read_sql(query_github, engine)
+
+# Fetch data from 'stackoverflow' table
+query_stackoverflow = "SELECT * FROM stackoverflow_fetch"
+sof_users = pd.read_sql(query_stackoverflow, engine)
 
 sof_users['github_username'] = sof_users['githubUrl'].apply(lambda x: x.split('/').pop() if isinstance(x, str) else None) #applying this function on the whole column also checking conv nans
 

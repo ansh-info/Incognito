@@ -1,37 +1,20 @@
 import os
-import mysql.connector
 import pandas as pd
 import logging
 import pickle
 import random
 import string
-from dotenv import load_dotenv
 from sklearn.preprocessing import StandardScaler
+from __init__ import path
+path()
+
+from connection.db_connection import get_db_connection
+import mysql.connector
+from mysql.connector import errorcode
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Load environment variables from .env file
-load_dotenv()
-
-# MySQL database connection details for user data
-# db_config = {
-#     'user': os.getenv('DB_USER'),
-#     'password': os.getenv('DB_PASSWORD'),
-#     'host': os.getenv('DB_HOST'),
-#     'database': os.getenv('DB_NAME')
-# }
-
-db_config = {
-    'user': 'root',
-    'password': 'root',
-    'host': 'localhost',
-    'database': 'incognito'
-}
-
-def create_db_connection(config):
-    """Create a database connection."""
-    return mysql.connector.connect(**config)
 
 def fetch_new_candidates(db_connection):
     """Fetch data from the master_candidates table."""
@@ -137,8 +120,8 @@ def truncate_suitable_candidates_table(db_connection):
     cursor.close()
 
 def main():
-    # Create database connection
-    db_conn = create_db_connection(db_config)
+    # Get database connection from the centralized handler
+    db_conn, DB_NAME = get_db_connection()
     
     # Truncate the suitable_candidates table to ensure it's empty
     truncate_suitable_candidates_table(db_conn)
