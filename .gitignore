@@ -25,3 +25,9 @@ __pycache__/
 
 # Last processed record ID
 count.txt
+
+# Ignore Jupyter notebook files
+*.ipynb
+
+# Ignore CSV files
+*.csv
