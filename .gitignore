@@ -22,3 +22,6 @@ yarn.lock
 # Python
 __pycache__/
 .ipynb_checkpoints/
+
+# Last processed record ID
+count.txt
