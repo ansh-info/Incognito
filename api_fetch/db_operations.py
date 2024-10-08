@@ -33,14 +33,14 @@ def insert_stackoverflow_data(user_data):
                 cursor = connection.cursor()
                 
                 # Step 1: Check if the user_id already exists in the table
-                check_sql = "SELECT COUNT(*) FROM stackoverflow_test WHERE user_id = %s"
+                check_sql = "SELECT COUNT(*) FROM stackoverflow_fetch WHERE user_id = %s"
                 cursor.execute(check_sql, (user_data['user_id'],))
                 result = cursor.fetchone()
 
                 if result[0] == 0:  # No existing record, proceed with insert
                     # Step 2: Insert the new record into the database
                     insert_sql = """
-                    INSERT INTO stackoverflow_test (
+                    INSERT INTO stackoverflow_fetch (
                         profileURL, user_id, githubUrl, reputation, reached, answers, questions, 
                         gold_badge_score, silver_badge_score, bronze_badge_score, top_5_tags
                     ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)

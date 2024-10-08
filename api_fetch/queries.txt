@@ -1,4 +1,4 @@
-CREATE TABLE github_test (
+CREATE TABLE github_fetch (
   username varchar(255) NOT NULL,
   followers int DEFAULT NULL,
   following int DEFAULT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE github_test (
   PRIMARY KEY (username)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE stackoverflow_test (
+CREATE TABLE stackoverflow_fetch (
   id int NOT NULL AUTO_INCREMENT,
   profileURL varchar(255) DEFAULT NULL,
   user_id varchar(255) DEFAULT NULL,
