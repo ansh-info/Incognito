@@ -219,7 +219,7 @@ def insert_data_in_batches(data, batch_size=10):
 
             # Create table if it doesn't exist
             check_table_query = """
-            CREATE TABLE IF NOT EXISTS github_test (
+            CREATE TABLE IF NOT EXISTS github_fetch (
                 username VARCHAR(255) PRIMARY KEY,
                 followers INT,
                 following INT,
@@ -254,7 +254,7 @@ def insert_data_in_batches(data, batch_size=10):
                 for user_data in batch:
                     try:
                         insert_query = """
-                        INSERT INTO github_test (username, followers, following, public_repos, public_gists, hireable, bio, location, company, email, created_at, updated_at, total_stars, total_forks, total_contributions, total_repos, languages, commit_count, pull_request_count, issue_count)
+                        INSERT INTO github_fetch (username, followers, following, public_repos, public_gists, hireable, bio, location, company, email, created_at, updated_at, total_stars, total_forks, total_contributions, total_repos, languages, commit_count, pull_request_count, issue_count)
                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         ON DUPLICATE KEY UPDATE
                         username=VALUES(username),
@@ -327,7 +327,7 @@ def insert_data_in_batches(data, batch_size=10):
 # Example usage
 if __name__ == "__main__":
     try:
-        github_data_batch = fetch_data_for_github_usernames_in_batches('stackoverflow_test', batch_size=5)
+        github_data_batch = fetch_data_for_github_usernames_in_batches('stackoverflow_fetch', batch_size=5)
         if github_data_batch:
             insert_data_in_batches(github_data_batch, batch_size=5)
     except Exception as e:
