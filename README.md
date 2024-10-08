@@ -15,54 +15,6 @@ Key Features:
 ### Webapplication
 ![Question Page](/images/questionpage.png)
 
-## Webapp
-
-```
-WEBAPP
-├── client
-│   ├── node_modules
-│   ├── public
-│   └── src
-│       ├── components
-│       │   ├── AdminDashboard
-│       │   │   ├── AdminDashboard.css
-│       │   │   └── AdminDashboard.jsx
-│       │   ├── App
-│       │   │   ├── App.css
-│       │   │   └── App.jsx
-│       │   ├── Login
-│       │   │   ├── Login.css
-│       │   │   └── Login.jsx
-│       │   ├── QuestionPage
-│       │   │   ├── QuestionPage.css
-│       │   │   └── QuestionPage.jsx
-│       │   └── QuestionsListPage
-│       │       ├── QuestionsListPage.css
-│       │       └── QuestionsListPage.jsx
-│       └── styles
-│           ├── index.css
-│           └── index.js
-├── .env
-├── craco.config.js
-├── package-lock.json
-├── package.json
-├── README.md
-├── tailwind.config.js
-├── yarn.lock
-├── create_insert_db
-├── node_modules
-└── utils
-    ├── answers.py
-    ├── Dockerfile
-    ├── requirements.txt
-    ├── runtestcases.py
-    ├── .dockerignore
-    ├── Dockerfile
-    ├── index.js
-    ├── package-lock.json
-    └── package.json
-```
-
 ## Installation and Setup
 
 To set up the project locally or on a server, follow these steps:
