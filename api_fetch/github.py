@@ -1,6 +1,6 @@
 import pandas as pd
 import requests
-from db_operations import fetch_github_urls_from_table
+from operations import fetch_github_urls_from_table
 from datetime import datetime
 import time
 import os

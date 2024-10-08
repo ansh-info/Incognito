@@ -5,7 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 import time
-from db_operations import insert_stackoverflow_data
+from operations import insert_stackoverflow_data
 
 #Using selenium to tackle lazy loading and to fetch the proper user data for the given base url.
 #once we get the proper user profile link, we can use it to scrape the candidate profiles
