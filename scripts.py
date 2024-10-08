@@ -4,7 +4,7 @@ import subprocess
 # List of files to include (you can add filenames or patterns here)
 INCLUDE_FILES = ["questionbank/create_questions.py", "questionbank/create_users.py", "questionbank/insert_questions.py",
                  "questionbank/master_candidate.py", "questionbank/suitable_candidates.py", "emailclient/logs/create_email_interview_logging_db.py",
-                 "emailclient/logs/create_email_selected_logging_db.py"]
+                 "emailclient/logs/create_email_selected_logging_db.py", "api_fetch/operations.py"]
 
 def run_all_scripts(root_dir):
     # Traverse all directories and subdirectories

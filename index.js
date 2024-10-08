@@ -471,7 +471,7 @@ app.post('/api/train-model', (req, res) => {
   const { userId } = req.body;
 
   // Execute the Python script to train model
-  exec(`python3 selection_algorithm/prediction_model.py --user_id=${userId}`, (err, stdout, stderr) => {
+  exec(`python3 selection_algorithm/prediction.py --user_id=${userId}`, (err, stdout, stderr) => {
     if (err) {
       console.error("Error executing train-model script:", err);
       return res.status(500).json({ message: "Failed to train-model.", error: err.message });
