@@ -202,11 +202,11 @@ plt.title('Correlation Heatmap of Selected Features')
 plt.show()
 
 # Save the DBSCAN model
-with open('selection_algorithm/dbscan_model.pkl', 'wb') as dbscan_file:
+with open('models/dbscan_model.pkl', 'wb') as dbscan_file:
     pickle.dump(dbscan, dbscan_file)
 
 # Save the Agglomerative Clustering model
-with open('selection_algorithm/agglomerative_model.pkl', 'wb') as agglomerative_file:
+with open('models/agglomerative_model.pkl', 'wb') as agglomerative_file:
     pickle.dump(agglomerative, agglomerative_file)
 
 print("Models have been saved as pickle files.")
