@@ -52,12 +52,21 @@ Then Build the Isolated Docker container to run the python test-cases
 ```bash
 cd utils
 docker build -t runtestcases .
+cd .. # To Return to the root 
 ```
 
-Install backend dependencies:
+Create a python virtual environment
 
 ```bash
+conda create --name webapp python=3.10
+conda activate webapp
+pip install -r requirements.txt
 python3 scripts.py
+```
+
+Install node dependencies:
+
+```bash
 npm install
 npm start
 ```
