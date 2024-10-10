@@ -47,7 +47,7 @@ def scale_features(df, scaler):
     return df, df_scaled  # Return both original and scaled DataFrames
 
 
-def load_model_and_scaler(model_file='model/logistic_regression_model.pkl', scaler_file='model/scaler.pkl'):
+def load_model_and_scaler(model_file='models/logistic_regression_model.pkl', scaler_file='models/scaler.pkl'):
     """Load the logistic regression model and scaler from pickle files."""
     with open(model_file, 'rb') as model_f:
         model = pickle.load(model_f)
