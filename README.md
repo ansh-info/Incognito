@@ -50,7 +50,7 @@ docker network connect python mysql
 Then Build the Isolated Docker container to run the python test-cases
 
 ```bash
-cd utils
+cd sandbox
 docker build -t runtestcases .
 cd .. # To Return to the root 
 ```
