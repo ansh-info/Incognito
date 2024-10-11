@@ -16,7 +16,7 @@ function Login({ setUser }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const endpoint = isRegistering ? '/register' : '/login';
+            const endpoint = isRegistering ? '/auth/register' : '/auth/login';
             const payload = isRegistering 
                 ? { username, email, password, is_admin: isAdmin, admin_code: adminCode }
                 : { login, password };
