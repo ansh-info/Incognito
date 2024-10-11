@@ -1,0 +1,41 @@
+CREATE TABLE IF NOT EXISTS github_fetch (
+  username varchar(255) NOT NULL,
+  followers int DEFAULT NULL,
+  following int DEFAULT NULL,
+  public_repos int DEFAULT NULL,
+  public_gists int DEFAULT NULL,
+  hireable tinyint(1) DEFAULT NULL,
+  bio text,
+  location varchar(255) DEFAULT NULL,
+  company varchar(255) DEFAULT NULL,
+  email varchar(255) DEFAULT NULL,
+  created_at datetime DEFAULT NULL,
+  updated_at datetime DEFAULT NULL,
+  total_stars int DEFAULT NULL,
+  total_forks int DEFAULT NULL,
+  total_contributions int DEFAULT NULL,
+  total_repos int DEFAULT NULL,
+  languages text,
+  commit_count int DEFAULT NULL,
+  pull_request_count int DEFAULT NULL,
+  issue_count int DEFAULT NULL,
+  PRIMARY KEY (username)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS stackoverflow_fetch (
+  id int NOT NULL AUTO_INCREMENT,
+  profileURL varchar(255) DEFAULT NULL,
+  user_id varchar(255) DEFAULT NULL,
+  githubUrl varchar(255) DEFAULT NULL,
+  reputation bigint DEFAULT NULL,
+  reached bigint DEFAULT NULL,
+  answers int DEFAULT NULL,
+  questions int DEFAULT NULL,
+  gold_badge_score int DEFAULT NULL,
+  silver_badge_score int DEFAULT NULL,
+  bronze_badge_score int DEFAULT NULL,
+  top_5_tags text,
+  PRIMARY KEY (id),
+  UNIQUE KEY profileURL (profileURL),
+  UNIQUE KEY user_id (user_id)
+) ENGINE=InnoDB AUTO_INCREMENT=1530 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
