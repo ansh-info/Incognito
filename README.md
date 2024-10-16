@@ -32,8 +32,10 @@ cd Incognito
 
 ### To run the repo locally
 
-Firstly make sure to set the env(connection/.env and emailclient/.env {for the emailclient - smtp password and tht server}) variables in the connection folder for your mysql database container.
-Then pull and start the mysql docker container and connect it to the docker network.
+- Firstly make sure to set the **env** variables in the connection folder for your mysql database container.
+- connection/.env and emailclient/.env for the emailclient - smtp password and the server
+- Then pull and start the mysql docker container and connect it to the docker network.
+
 Docker Command to run the mysql container:
 
 ```bash
@@ -79,21 +81,25 @@ Build and run Docker containers: The entire environment, including the MySQL dat
 docker-compose up --build
 ```
 
-- and 
-
 ```bash
 docker run --name webapp --network webapp -p 5001:5001 -p 3000:3000 \
   -v /var/run/docker.sock:/var/run/docker.sock \
   webapp
 ```
 
-This command will:
-Set up the MySQL database with the tables for questions and test cases.
-Launch the Node.js backend.
-Serve the frontend on http://localhost:3000.
-Database Configuration: By default, the Docker environment creates a MySQL container where all the questions and test cases are stored. You can modify the database schema by editing the migration files located in the /config/db.js.
+#### What This Command Does:
+- Sets up the **MySQL database** with tables for questions and test cases.
+- Launches the **Node.js backend**.
+- Serves the **frontend** on [http://localhost:3000](http://localhost:3000).
 
-Access the application: Once the containers are running, open your browser and go to http://localhost:3000 to access the platform.
+#### Database Configuration:
+- By default, the Docker environment creates a **MySQL container** where all the questions and test cases are stored.
+- You can modify the database schema by editing the migration files located in `/config/db.js`.
+
+#### Accessing the Application:
+Once the containers are running:
+- Open your browser.
+- Go to [http://localhost:3000](http://localhost:3000) to access the platform.
 
 ### Admindashboard
 ![Admin Dashboard](/images/admindashboard.png)

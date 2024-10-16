@@ -67,9 +67,10 @@ function QuestionPage({ selectedQuestionId, setSelectedQuestion, user, setAdminR
             </div>
             {testCaseResults.length > 0 && (
                 <div className="test-results">
-                    {testCaseResults.map((result) => (
+                    {testCaseResults.map((result, index) => (
                         <div key={result.test_case_id} className={`result-box ${result.passed ? 'passed' : 'failed'}`}>
-                            {result.passed ? '✅ Passed' : `❌ Failed: ${result.error || 'Incorrect output'}`} (Test Case ID: {result.test_case_id})
+                            {/* {result.passed ? '✅ Passed' : `❌ Failed: ${result.error || 'Incorrect output'}`} (Test Case ID: {result.test_case_id}) */}
+                            {result.passed ? '✅ Passed' : `❌ Failed: ${result.error || 'Incorrect output'}`} (Test Case: {index + 1})
                         </div>
                     ))}
                 </div>

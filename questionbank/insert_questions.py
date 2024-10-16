@@ -133,26 +133,39 @@ test_cases = [
     }
 ]
 
-def create_tables(cursor):
-    create_questions_table = (
-        "CREATE TABLE IF NOT EXISTS questions ("
-        " question_id INT PRIMARY KEY,"
-        " title VARCHAR(255),"
-        " description TEXT,"
-        " difficulty VARCHAR(50)"
-        ") ENGINE=InnoDB")
+def check_table_structure(cursor, table_name):
+    cursor.execute(f"DESCRIBE {table_name}")
+    columns = cursor.fetchall()
+    print(f"Current structure of {table_name} table:")
+    for column in columns:
+        print(f"- {column[0]}: {column[1]}")
+    return {col[0] for col in columns}
 
-    create_test_cases_table = (
-        "CREATE TABLE IF NOT EXISTS test_cases ("
-        " test_case_id INT PRIMARY KEY,"
-        " question_id INT,"
-        " input TEXT,"
-        " expected_output TEXT,"
-        " FOREIGN KEY (question_id) REFERENCES questions(question_id)"
-        ") ENGINE=InnoDB")
+def alter_table_structure(cursor):
+    try:
+        existing_columns = check_table_structure(cursor, 'questions')
+        
+        # Add 'title' column if it doesn't exist
+        if 'title' not in existing_columns:
+            cursor.execute("ALTER TABLE questions ADD COLUMN title VARCHAR(255) NOT NULL AFTER question_id")
+            print("Added 'title' column to 'questions' table.")
+        
+        # Rename 'question_text' to 'description' if it exists, otherwise add 'description'
+        if 'question_text' in existing_columns:
+            cursor.execute("ALTER TABLE questions CHANGE COLUMN question_text description TEXT NOT NULL")
+            print("Renamed 'question_text' to 'description' in 'questions' table.")
+        elif 'description' not in existing_columns:
+            cursor.execute("ALTER TABLE questions ADD COLUMN description TEXT NOT NULL AFTER title")
+            print("Added 'description' column to 'questions' table.")
+        
+        # Add 'difficulty' column if it doesn't exist
+        if 'difficulty' not in existing_columns:
+            cursor.execute("ALTER TABLE questions ADD COLUMN difficulty VARCHAR(50) NOT NULL")
+            print("Added 'difficulty' column to 'questions' table.")
 
-    cursor.execute(create_questions_table)
-    cursor.execute(create_test_cases_table)
+    except mysql.connector.Error as err:
+        print(f"Error altering table: {err}")
+        raise
 
 def insert_data(cursor):
     # Using ON DUPLICATE KEY UPDATE to handle duplicates
@@ -184,7 +197,15 @@ def main():
 
     try:
         cursor = cnx.cursor()
-        create_tables(cursor)
+        
+        print("Before alteration:")
+        check_table_structure(cursor, 'questions')
+        
+        alter_table_structure(cursor)
+        
+        print("\nAfter alteration:")
+        check_table_structure(cursor, 'questions')
+        
         insert_data(cursor)
         cnx.commit()
         print("Data inserted successfully.")
