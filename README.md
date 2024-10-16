@@ -112,36 +112,6 @@ The MySQL database stores all the coding problems, test cases, and user solution
 - test_cases: Each question has associated test cases that validate the correctness of the submitted solution.
 - user_submissions: Stores user submissions and execution results, including status (pass/fail) and runtime.
 
-### Prerequisites
-
-Docker installed on your system.
-A running MySQL instance that the container can connect to.
-
-### Setup Instructions
-
-1. Pull the Image from Docker Hub:
-`docker pull anshinfo/runtestcases:latest`
-
-2. Create a Docker Network (if not already created) to connect the Python container with MySQL:
-`docker network create mynetwork`
-
-3. Run the MySQL Container:
-`docker run -d --network mynetwork --name mysql-container -e MYSQL_ROOT_PASSWORD=Passwd mysql:latest`
-
-4. Run the Python Container:
-`docker run --network mynetwork --name runtestcases anshinfo/runtestcases:latest`
-
-````bash
-#### Build the Docker Image Locally
-
-If you want to build the Docker image yourself, you can follow these steps:
-
-1. Clone the repository or ensure you have the Dockerfile and related source files.  
-2. Navigate to the directory containing the Dockerfile.   
-3. Use the following command to build the image:
-
-docker build -t runtestcases .
-````
 ### Sending Email to Suitable Candidates
 ![Sutitablecandidates](/images/sutitablecandidates.png)
 
@@ -161,39 +131,20 @@ All test cases are executed within Docker containers, ensuring that each solutio
 
 We created a Docker network to allow communication between containers, specifically between the MySQL container and the container running the Python script. This ensures that the containers can find each other using container names instead of IP addresses, which can change.
 
-**Command:**
-
-```bash
-docker network create mynetwork
-```
-
-This command creates a new network called mynetwork.(mustread-utils/README.md)
 
 **2. Connect Existing MySQL Container to the Network**
 
 If you already have a MySQL container running, you need to connect it to the newly created network. This allows the container running the Python script to communicate with the MySQL database.
 
-**Command:**
-
-```bash
-docker network connect mynetwork mysql
-```
-
-This command connects the existing MySQL container (named mysql) to the mynetwork.
-
 **3. Dockerfile for the Python Script**
 
-We created a Dockerfile to build an image for running the Python script (runtestcases.py). The image includes Python and the required dependencies.
+We created a Dockerfile to build an image for running the Python script **runtestcases.py**. The image includes Python and the required dependencies.
 
 ## To run test cases:
 
 - When a user submits their solution, it is passed to a Docker container with a pre-configured environment.
 - The RunTestCases.py script is executed inside the container, where it fetches the relevant test cases from the MySQL database and runs them against the user's solution.
 - The result is sent back to the frontend, displaying whether the test cases passed or failed, along with execution details.
-
-```bash
-python RunTestCases.py --question_id=123 --language=python
-```
 
 ## Example Flow:
 
@@ -209,7 +160,7 @@ python RunTestCases.py --question_id=123 --language=python
 - Frontend: HTML, CSS, JavaScript
 - Database: MySQL (for questions and test case storage)
 - Containerization: Docker, Docker Compose
-- Programming Languages Supported: Python(additional        languages to be added)
+- Programming Languages Supported: Python(additional languages to be added)
 
 ## Future Updates
 
